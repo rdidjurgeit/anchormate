@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { apiClient } from "../api/apiClient";
+import apiClient from '../api/apiClient'; // Corrected import path for apiClient
 
 const AnchorageList = () => {
     const [anchorages, setAnchorages] = useState([]);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        apiClient.get('/api/anchorages/')
-            .then((response) => {
-                return response.data;
-            })
+        apiClient.get('/api/anchorage/')  // Ensure the endpoint path is correct here
+            .then((response) => response.data)
             .then((data) => setAnchorages(data))
             .catch((error) => setError(error.message));
     }, []);

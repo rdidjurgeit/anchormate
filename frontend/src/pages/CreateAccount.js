@@ -1,25 +1,35 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { apiClient } from '../api/apiClient';
+import apiClient from '../api/apiClient'; // Ensure apiClient is configured correctly
 
 const CreateAccount = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(null);
     const navigate = useNavigate();
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        apiClient.post('/api/register/', { username, password, email })
-            .then(() => navigate('/login'))
-            .catch(() => setError('Registration failed. Please try again.'));
+        setError(null);
+        setSuccess(null);
+
+        try {
+            await apiClient.post('/api/register/', { username, password, email });
+            setSuccess("Account created successfully! Redirecting to login...");
+            setTimeout(() => navigate('/login'), 2000); // Redirect after a delay
+        } catch (error) {
+            setError("Registration failed. Please try again.");
+            console.error("Registration error:", error);
+        }
     };
 
     return (
         <div>
             <h1>Create Account</h1>
             {error && <p style={{ color: 'red' }}>{error}</p>}
+            {success && <p style={{ color: 'green' }}>{success}</p>}
             <form onSubmit={handleSubmit}>
                 <input
                     type="text"
