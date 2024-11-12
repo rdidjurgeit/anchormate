@@ -2,8 +2,8 @@ import logo from './logo.svg';
 import './App.css';
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import AnchorageList from './components/AnchorageList';
-import AnchorageDetail from './components/AnchorageDetail';
+import AnchorageList from './pages/AnchorageList';
+import AnchorageDetail from './pages/AnchorageDetail';
 
 function App() {
     return (

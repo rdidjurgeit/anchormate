@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { apiClient } from "../api/apiClient";
 
 const AnchorageList = () => {
     const [anchorages, setAnchorages] = useState([]);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/api/anchorages/')
+        apiClient.get('/api/anchorages/')
             .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
+                return response.data;
             })
             .then((data) => setAnchorages(data))
             .catch((error) => setError(error.message));
