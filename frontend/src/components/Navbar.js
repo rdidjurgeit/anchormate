@@ -13,6 +13,7 @@ const NavigationBar = () => {
                         <Nav.Link as={Link} to="/">Home</Nav.Link>
                         <Nav.Link as={Link} to="/login">Login</Nav.Link>
                         <Nav.Link as={Link} to="/create-account">Create Account</Nav.Link>
+                        <Nav.Link as={Link} to="/anchorage-list">Anchorage List</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Container>

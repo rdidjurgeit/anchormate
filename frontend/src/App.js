@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -13,15 +12,17 @@ import CreateAccount from './pages/CreateAccount';
 function App() {
     return (
         <Router>
-            <NavigationBar />
-            <div className="container mt-4">
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/create-account" element={<CreateAccount />} />
-                </Routes>
-            </div>
-        </Router>
+        <NavigationBar />
+        <div className="container mt-4">
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/create-account" element={<CreateAccount />} />
+                <Route path="/anchorage-list" element={<AnchorageList />} />
+                <Route path="/anchorage-details/:id" element={<AnchorageDetail />} />
+            </Routes>
+        </div>
+    </Router>
     );
 }
 
