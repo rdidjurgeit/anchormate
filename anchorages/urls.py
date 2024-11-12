@@ -8,4 +8,5 @@ router.register(r'reviews', views.ChartReviewViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('api/register/', views.RegisterView.as_view(), name='register'),
 ]

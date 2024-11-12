@@ -2,7 +2,7 @@ import React from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-const NavigationBar = () => {
+const NavigationBar = ({ loggedIn, onLogout }) => {
     return (
         <Navbar bg="dark" variant="dark" expand="lg">
             <Container>
@@ -11,9 +11,17 @@ const NavigationBar = () => {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         <Nav.Link as={Link} to="/">Home</Nav.Link>
-                        <Nav.Link as={Link} to="/login">Login</Nav.Link>
-                        <Nav.Link as={Link} to="/create-account">Create Account</Nav.Link>
-                        <Nav.Link as={Link} to="/anchorage-list">Anchorage List</Nav.Link>
+                        {loggedIn ? (
+                            <>
+                                <Nav.Link as={Link} to="/anchorage-list">Anchorage List</Nav.Link>
+                                <Nav.Link onClick={onLogout}>Logout</Nav.Link>
+                            </>
+                        ) : (
+                            <>
+                                <Nav.Link as={Link} to="/login">Login</Nav.Link>
+                                <Nav.Link as={Link} to="/create-account">Create Account</Nav.Link>
+                            </>
+                        )}
                     </Nav>
                 </Navbar.Collapse>
             </Container>
