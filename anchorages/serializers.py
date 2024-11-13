@@ -2,20 +2,18 @@ from rest_framework import serializers
 from .models import UserProfile, Anchorage, ChartReview
 from django.contrib.auth.models import User
 
-class UserProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserProfile
-        fields = ['home_port', 'vessel_type', 'bio']
-
 class AnchorageSerializer(serializers.ModelSerializer):
-    added_by = serializers.SerializerMethodField()
-    def get_added_by(self, obj):
-        # Check if 'added_by' exists and return the username, else return None
-        return obj.added_by.username if obj.added_by else None
     class Meta:
         model = Anchorage
-        fields = '__all__'
+        fields = ['id', 'name', 'location']
 
+class UserProfileSerializer(serializers.ModelSerializer):
+    bookmarked_anchorages = AnchorageSerializer(many=True, read_only=True, source='bookmarked_anchorages')
+
+    class Meta:
+        model = UserProfile
+        fields = ['home_port', 'vessel_type', 'bio', 'bookmarked_anchorages']
+        
 class ChartReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChartReview

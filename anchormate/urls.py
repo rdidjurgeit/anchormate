@@ -26,4 +26,5 @@ urlpatterns = [
     path('api/current-user/', CurrentUserView.as_view(), name='current-user'),
     path('api/register/', RegisterView.as_view(), name='register'),
     path('api/anchorage/', include('anchorages.urls')),
+    path('', include('anchorages.urls')),
 ]

@@ -1,8 +1,7 @@
-from rest_framework import viewsets, generics
+from rest_framework import viewsets, generics, permissions
 from django.contrib.auth.models import User
-from .models import Anchorage, ChartReview
-from .serializers import AnchorageSerializer, ChartReviewSerializer
-from .serializers import UserRegistrationSerializer
+from .models import Anchorage, ChartReview, UserProfile
+from .serializers import AnchorageSerializer, ChartReviewSerializer, UserRegistrationSerializer, UserProfileSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from .permissions import IsOwnerOrEditOnly
 
@@ -22,3 +21,11 @@ class ChartReviewViewSet(viewsets.ModelViewSet):
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserRegistrationSerializer
+
+class UserBookmarkListView(generics.RetrieveUpdateAPIView):
+    serializer_class = UserProfileSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        # Retrieves the UserProfile of the logged-in user
+        return UserProfile.objects.get(user=self.request.user)

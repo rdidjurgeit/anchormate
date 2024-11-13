@@ -21,3 +21,48 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+core.Microsoft*
+core.mongo*
+core.python*
+env.py
+_pycache_/
+*.py[cod]
+node_modules/
+.github/
+cloudinary_python.txt
+db.sqlite3
+venv
+
+# Python dependencies
+__pycache__/
+*.py[cod]
+*.pyo
+.env  # if you're using environment variables
+
+# Virtual environment folder (optional, replace 'venv' if your virtual environment folder has a different name)
+venv/
+
+# Django REST framework JWT tokens (if any token files are generated)
+.jwt_cache
+
+# Node.js dependencies
+node_modules/
+
+# Dependency files
+requirements.txt  # Track this file instead of the installed packages
+
+# Python dependencies
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+
+# Virtual environment folder (adjust the folder name if different)
+venv/
+
+# Ignore all generated .po files, if not needed
+*.po
+
+# Ignore installed packages, retaining only requirements.txt
+requirements.txt
