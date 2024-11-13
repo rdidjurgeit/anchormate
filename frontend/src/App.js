@@ -9,9 +9,10 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import CreateAccount from './pages/CreateAccount';
 import { useAuth } from './api/useAuth';
+import AnchorageForm from './pages/AnchorageForm';
 
 function App() {
-    const { isLoggedIn, login, logout } = useAuth();
+    const { currentUser, isLoggedIn, login, logout } = useAuth();
 
     return (
         <Router>
@@ -21,8 +22,10 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/login" element={<Login onLogin={login} />} />
                     <Route path="/create-account" element={<CreateAccount />} />
-                    <Route path="/anchorage-list" element={<AnchorageList />} />
-                    <Route path="/anchorage-details/:id" element={<AnchorageDetail />} />
+                    <Route path="/anchorages" element={<AnchorageList currentUser={currentUser}/>} />
+                    <Route path="/anchorages/:id" element={<AnchorageDetail />} />
+                    <Route path="/anchorage/create" element={<AnchorageForm />} /> {/* Create anchorage */}
+                    <Route path="/anchorages/edit/:id" element={<AnchorageForm />} /> {/* Edit anchorage */}
                 </Routes>
             </div>
         </Router>

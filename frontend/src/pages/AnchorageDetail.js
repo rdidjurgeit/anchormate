@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { apiClient } from "../api/apiClient";
+import { useParams, useNavigate  } from 'react-router-dom';
+import  apiClient from "../api/apiClient";
 
 
 const AnchorageDetail = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
     const [anchorage, setAnchorage] = useState(null);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        apiClient.get(`/api/anchorages/${id}/`)
+        apiClient.get(`/api/anchorage/${id}/`)
             .then((response) => {
                 return response.data;
             })
@@ -32,6 +33,8 @@ const AnchorageDetail = () => {
             <p>Depth: {anchorage.depth}</p>
             <p>Seabed Type: {anchorage.seabed_type}</p>
             <p>Description: {anchorage.description}</p>
+
+            <button onClick={() => navigate('/anchorages')}>Back to Anchorage List</button>
         </div>
     );
 };

@@ -11,29 +11,31 @@ export const useAuth = () => {
 
     // Load the current user on component mount if there's a token in localStorage
     useEffect(() => {
-        const token = localStorage.getItem(TOKEN_LOCAL_STORAGE_KEY);
-        if (token) {
-            apiClient.get('/api/current-user/')
-                .then(response => setCurrentUser(response.data))
-                .catch(error => {
-                    console.error("Failed to fetch current user:", error);
-                    localStorage.removeItem(TOKEN_LOCAL_STORAGE_KEY); // Clear token if invalid
-                });
-        }
+        getCurrentUser();
     }, []);
-
-    // Handle login, saving the token and fetching the current user
+    
     const login = async (username, password) => {
         const tokenResponse = await apiClient.post('/api/login/', { username, password });
         localStorage.setItem(TOKEN_LOCAL_STORAGE_KEY, tokenResponse.data.access);
-        const userResponse = await apiClient.get('/api/current-user/');
-        setCurrentUser(userResponse.data);
+        await getCurrentUser();
     };
 
     // Handle logout, clearing the token and current user
     const logout = () => {
         localStorage.removeItem(TOKEN_LOCAL_STORAGE_KEY);
         setCurrentUser(null);
+    };
+
+    const getCurrentUser = async () => {
+        const token = localStorage.getItem(TOKEN_LOCAL_STORAGE_KEY);
+        if (token) {
+            try {
+                const response = await apiClient.get('/api/current-user/');
+                setCurrentUser(response.data);
+            } catch(e) {
+                // Ignore 401 error if the token is expired
+            }
+        }
     };
 
     return { currentUser, isLoggedIn, login, logout };

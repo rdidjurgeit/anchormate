@@ -13,7 +13,7 @@ const NavigationBar = ({ loggedIn, onLogout }) => {
                         <Nav.Link as={Link} to="/">Home</Nav.Link>
                         {loggedIn ? (
                             <>
-                                <Nav.Link as={Link} to="/anchorage-list">Anchorage List</Nav.Link>
+                                <Nav.Link as={Link} to="/anchorages">Anchorage List</Nav.Link>
                                 <Nav.Link onClick={onLogout}>Logout</Nav.Link>
                             </>
                         ) : (

@@ -8,6 +8,10 @@ class UserProfileSerializer(serializers.ModelSerializer):
         fields = ['home_port', 'vessel_type', 'bio']
 
 class AnchorageSerializer(serializers.ModelSerializer):
+    added_by = serializers.SerializerMethodField()
+    def get_added_by(self, obj):
+        # Check if 'added_by' exists and return the username, else return None
+        return obj.added_by.username if obj.added_by else None
     class Meta:
         model = Anchorage
         fields = '__all__'
