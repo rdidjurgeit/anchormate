@@ -9,11 +9,12 @@ const NavigationBar = ({ loggedIn, onLogout }) => {
                 <Navbar.Brand as={Link} to="/">Anchormate</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className="me-auto">
+                <Nav className="me-auto">
                         <Nav.Link as={Link} to="/">Home</Nav.Link>
+                        {/* Show Anchorage List for all users */}
+                        <Nav.Link as={Link} to="/anchorages">Anchorage List</Nav.Link>
                         {loggedIn ? (
                             <>
-                                <Nav.Link as={Link} to="/anchorages">Anchorage List</Nav.Link>
                                 <Nav.Link onClick={onLogout}>Logout</Nav.Link>
                             </>
                         ) : (

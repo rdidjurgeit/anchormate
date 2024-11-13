@@ -3,13 +3,13 @@ from django.contrib.auth.models import User
 from .models import Anchorage, ChartReview
 from .serializers import AnchorageSerializer, ChartReviewSerializer
 from .serializers import UserRegistrationSerializer
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from .permissions import IsOwnerOrEditOnly
 
 class AnchorageViewSet(viewsets.ModelViewSet):
     queryset = Anchorage.objects.all()
     serializer_class = AnchorageSerializer
-    permission_classes = [IsAuthenticated, IsOwnerOrEditOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrEditOnly]
     
     def perform_create(self, serializer):
         # Set 'added_by' to the current user when creating an anchorage

@@ -19,7 +19,7 @@ const AnchorageList = ({currentUser}) => {  // Assume currentUser is passed as a
     return (
         <div>
             <h1>Anchorages</h1>
-            <Link to="/anchorage/create">Create New Anchorage</Link>
+            {currentUser && <Link to="/anchorage/create">Create New Anchorage</Link>} {/* Show only if logged in */}
             <ul>
                 {anchorages.map((anchorage) => (
                     <li key={anchorage.id}>
