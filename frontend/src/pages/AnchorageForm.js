@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import apiClient from '../api/apiClient';
+import { Container, Card, Form, Button, Alert } from 'react-bootstrap';
+import '../styles/style.css';
+
 
 const AnchorageForm = () => {
     const { id } = useParams();
@@ -65,18 +68,90 @@ const AnchorageForm = () => {
 
     return (
         <div>
-            <h1>{id ? 'Edit' : 'Create'} Anchorage</h1>
-            {error && <p>{error}</p>}
-            <form onSubmit={handleSubmit}>
-                <input name="name" placeholder="Name" value={anchorageData.name} onChange={handleChange} required />
-                <input name="location" placeholder="Location" value={anchorageData.location} onChange={handleChange} required />
-                <input name="latitude" placeholder="Latitude" value={anchorageData.latitude} onChange={handleChange} required />
-                <input name="longitude" placeholder="Longitude" value={anchorageData.longitude} onChange={handleChange} required />
-                <input name="depth" placeholder="Depth" value={anchorageData.depth} onChange={handleChange} required />
-                <input name="seabed_type" placeholder="Seabed Type" value={anchorageData.seabed_type} onChange={handleChange} required />
-                <textarea name="description" placeholder="Description" value={anchorageData.description} onChange={handleChange} required />
-                <button type="submit">{id ? 'Update' : 'Create'}</button>
-            </form>
+            <Container className="my-4">
+            <Card className="p-4">
+                <Card.Body>
+                    <Card.Title>{id ? 'Edit' : 'Create'} Anchorage</Card.Title>
+                    {error && <Alert variant="danger">{error}</Alert>}
+                    <Form onSubmit={handleSubmit}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Name</Form.Label>
+                            <Form.Control
+                                name="name"
+                                placeholder="Name"
+                                value={anchorageData.name}
+                                onChange={handleChange}
+                                required
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Location</Form.Label>
+                            <Form.Control
+                                name="location"
+                                placeholder="Location"
+                                value={anchorageData.location}
+                                onChange={handleChange}
+                                required
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Latitude</Form.Label>
+                            <Form.Control
+                                name="latitude"
+                                placeholder="Latitude"
+                                value={anchorageData.latitude}
+                                onChange={handleChange}
+                                required
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Longitude</Form.Label>
+                            <Form.Control
+                                name="longitude"
+                                placeholder="Longitude"
+                                value={anchorageData.longitude}
+                                onChange={handleChange}
+                                required
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Depth</Form.Label>
+                            <Form.Control
+                                name="depth"
+                                placeholder="Depth"
+                                value={anchorageData.depth}
+                                onChange={handleChange}
+                                required
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Seabed Type</Form.Label>
+                            <Form.Control
+                                name="seabed_type"
+                                placeholder="Seabed Type"
+                                value={anchorageData.seabed_type}
+                                onChange={handleChange}
+                                required
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Description</Form.Label>
+                            <Form.Control
+                                as="textarea"
+                                name="description"
+                                placeholder="Description"
+                                value={anchorageData.description}
+                                onChange={handleChange}
+                                required
+                            />
+                        </Form.Group>
+                        <Button variant="primary" type="submit">
+                            {id ? 'Update' : 'Create'}
+                        </Button>
+                    </Form>
+                </Card.Body>
+            </Card>
+        </Container>
         </div>
     );
 };

@@ -1,0 +1,64 @@
+:root {
+    --text: #050f0b;
+    --background: #f8fdfb;
+    --primary: #4bc19c;
+    --secondary: #99c1dc;
+    --accent: #6c89cd;
+  }
+  
+  body {
+    color: var(--text);
+    background-color: var(--background);
+    font-family: Arial, sans-serif;
+  }
+  
+  h1, h2, h3 {
+    color: var(--primary);
+  }
+  
+  p {
+    color: var(--text);
+  }
+  
+  .container {
+    margin-top: 2rem;
+  }
+  
+  .navbar, .footer {
+    background-color: var(--secondary);
+    color: var(--background);
+  }
+
+  .navbar {
+    background-color: var(--secondary) !important;
+  }
+  
+  .btn-primary {
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
+  }
+  
+  .btn-secondary {
+    background-color: var(--accent) !important;
+    border-color: var(--accent) !important;
+  }
+
+  .card {
+    border: 1px solid var(--secondary);
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary {
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
+}
+
+.fas {
+    color: var(--accent);
+    margin-right: 5px;
+}
