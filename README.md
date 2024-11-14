@@ -28,6 +28,25 @@ $ python manage.py makemigrations
 $ python manage.py migrate
 ```
 
+To Run the server you need to start with the command:
+
+```
+$ python manage.py runserver
+```
+
+To Run the FrontEnd go to the directory `cd frontend` and run:
+
+```
+$ npm start
+```
+
+if it is the first time you will need to create a superUser to access the Admin
+
+```
+python manage.py createsuperuser
+```
+
+
 Don't forget to commit the changes to the migration files in `anchorages/migrations`.
 
 ## NPM Vulnerabilities

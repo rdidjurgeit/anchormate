@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 
-const Bookmarks = ({bookmarks}) => {
-    const [error, setError] = useState(null);
+const Bookmarks = ({ bookmarks }) => {
+    // Remove unused setError if not needed
+    const [error] = useState(null); 
     
     return (
         <Container className="my-4">
             <h1>Your Bookmarked Anchorages</h1>
             {error && <p style={{ color: 'red' }}>{error}</p>}
             <Row>
-                {bookmarks.length > 0 ? (
+                {bookmarks?.length > 0 ? (
                     bookmarks.map(({ anchorage }) => (
                         <Col key={anchorage.id} xs={12} md={6} lg={4} className="mb-4">
                             <Card className="h-100">

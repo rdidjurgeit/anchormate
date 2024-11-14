@@ -54,9 +54,9 @@ const AnchorageList = ({ currentUser, bookmarkIds, onToggleBookmark }) => {
         <Container className="my-4">
             <h1>Anchorages</h1>
             {currentUser && (
-                <Link to="/anchorage/create" className="btn btn-primary mb-4">
-                    Create New Anchorage
-                </Link>
+                <Link to="/anchorages/create" className="btn btn-primary mb-4">
+                Create New Anchorage
+            </Link>
             )}
             {anchorages.length > 0 && <SearchBar onSearch={handleSearch} />}
             <Row>

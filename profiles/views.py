@@ -21,4 +21,8 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserRegistrationSerializer
-    permission_classes = [AllowAny] 
+    permission_classes = [AllowAny]
+    
+    def perform_create(self, serializer):
+        user = serializer.save()
+    
