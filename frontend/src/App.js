@@ -14,6 +14,7 @@ import Bookmarks from './pages/Bookmarks';
 import apiClient from './api/apiClient';
 import { useBookmarks } from './api/useBookmarks';
 import ForgotPassword from './pages/ForgotPassword';
+import UserProfilePage from './components/UserProfilePage';
 
 function App() {
     const { login, logout, currentUser, isAuthenticated } = useAuth();
@@ -41,6 +42,7 @@ function App() {
                     <Route path="/login" element={<Login onLogin={login} />} />
                     <Route path="/create-account" element={<CreateAccount />} />
                     <Route path="/forgot-password" element={<ForgotPassword />} />
+                    <Route path="/profile" element={<UserProfilePage />} />
                     <Route path="/anchorages" element={
                         <AnchorageList 
                             currentUser={currentUser} 
