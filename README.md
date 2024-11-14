@@ -1,27 +1,43 @@
-Firt Commit
+# README
 
-Required 
-Python and Node to be install
+## Getting started
 
-after creating the first model i use the commands 
+This project requires Python 3 and Node v20.
 
-python manage.py makemigrations
-python manage.py migrate
+Install the project dependencies:
 
-so the migrate was made
+```sh
+# In the root of the project
+$ pip install -r requirements.txt
+# In the frontend/ directory
+$ npm install
+```
 
-after installing react since some packages are open sorce there is vunerable at this moment it was found 
+When setting it up for the first time, apply the database migrations:
 
-8 vulnerabilities (2 moderate, 6 high). using the command:
+```sh
+$ python manage.py migrate
+```
 
-npm audit fix
+## Model Changes
 
-did not fix and the other option wil be:
+After creating or modifying a model I use the commands:
 
-npm audit fix --force
+```sh
+$ python manage.py makemigrations
+$ python manage.py migrate
+```
 
-but this could make braking changes and at this moment there is no possibility to checke it.
+Don't forget to commit the changes to the migration files in `anchorages/migrations`.
 
+## NPM Vulnerabilities
 
-pip install djangorestframework-simplejwt
-npm install react-icons
+After installing dependencies, there may be a vulnerability, for example:
+
+> 8 vulnerabilities (2 moderate, 6 high)
+
+Using the command, you can attempt to resolve the issues:
+
+```sh
+$ npm audit fix
+```
