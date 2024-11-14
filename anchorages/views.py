@@ -1,31 +1,29 @@
-from rest_framework import viewsets, generics, permissions
-from django.contrib.auth.models import User
-from .models import Anchorage, ChartReview, UserProfile
-from .serializers import AnchorageSerializer, ChartReviewSerializer, UserRegistrationSerializer, UserProfileSerializer
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from .permissions import IsOwnerOrEditOnly
+from rest_framework import viewsets, generics
+from .models import Anchorage, Bookmark
+from .serializers import AnchorageSerializer, BookmarkSerializer
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 
 class AnchorageViewSet(viewsets.ModelViewSet):
     queryset = Anchorage.objects.all()
     serializer_class = AnchorageSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrEditOnly]
-    
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
     def perform_create(self, serializer):
-        # Set 'added_by' to the current user when creating an anchorage
         serializer.save(added_by=self.request.user)
 
-class ChartReviewViewSet(viewsets.ModelViewSet):
-    queryset = ChartReview.objects.all()
-    serializer_class = ChartReviewSerializer
-    
-class RegisterView(generics.CreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserRegistrationSerializer
+class BookmarkListView(generics.ListCreateAPIView):
+    serializer_class = BookmarkSerializer
+    permission_classes = [IsAuthenticated]
 
-class UserBookmarkListView(generics.RetrieveUpdateAPIView):
-    serializer_class = UserProfileSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    def get_queryset(self):
+        return Bookmark.objects.filter(user=self.request.user)
 
-    def get_object(self):
-        # Retrieves the UserProfile of the logged-in user
-        return UserProfile.objects.get(user=self.request.user)
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+class BookmarkDetailView(generics.RetrieveDestroyAPIView):
+    serializer_class = BookmarkSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Bookmark.objects.filter(user=self.request.user)

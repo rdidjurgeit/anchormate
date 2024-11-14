@@ -12,24 +12,18 @@ import { useAuth } from './api/useAuth';
 import AnchorageForm from './pages/AnchorageForm';
 import Bookmarks from './pages/Bookmarks';
 import apiClient from './api/apiClient'
+import { useProfile } from './api/useProfile';
 
 function App() {
     const { currentUser, isLoggedIn, login, logout } = useAuth();
     const [anchorages, setAnchorages] = useState([]);
-    const [bookmarkIds, setBookmarkIds] = useState([]);
+    const { profile, bookmarkIds, toggleBookmark } = useProfile(currentUser);
 
     useEffect(() => {
         // Fetch all anchorages
         apiClient.get('/api/anchorage/')
             .then(response => setAnchorages(response.data))
             .catch(error => console.error('Error fetching anchorages:', error));
-
-        // Fetch user-specific bookmarks if the user is logged in
-        if (currentUser) {
-            apiClient.get(`/api/users/${currentUser.username}/bookmarks`)
-                .then(response => setBookmarkIds(response.data))  // Assuming response.data is an array of IDs
-                .catch(error => console.error('Error fetching bookmarks:', error));
-        }
     }, [currentUser]);
 
     return (
@@ -40,13 +34,25 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/login" element={<Login onLogin={login} />} />
                     <Route path="/create-account" element={<CreateAccount />} />
-                    <Route path="/anchorages" element={<AnchorageList currentUser={currentUser}/>} />
+                    <Route path="/anchorages" element={
+                        <AnchorageList 
+                            currentUser={currentUser} 
+                            bookmarkIds={bookmarkIds}
+                            onToggleBookmark={toggleBookmark}
+                        />
+                    }/>
                     <Route path="/anchorages/:id" element={<AnchorageDetail />} />
                     <Route path="/anchorage/create" element={<AnchorageForm />} /> {/* Create anchorage */}
                     <Route path="/anchorages/edit/:id" element={<AnchorageForm />} /> {/* Edit anchorage */}
-                    <Route path="/bookmarks"element={isLoggedIn ? (<Bookmarks 
-                                    currentUser={currentUser} bookmarkIds={bookmarkIds} anchorages={anchorages}/>
-                                ) : (<Navigate to="/login" replace />)}/>
+                    <Route path="/bookmarks"element={isLoggedIn
+                        ? (<Bookmarks 
+                            currentUser={currentUser} 
+                            bookmarkIds={bookmarkIds} 
+                            anchorages={anchorages}
+                            onToggle={toggleBookmark}
+                        />) 
+                        : (<Navigate to="/login" replace />)
+                    }/>
                 </Routes>
             </div>
         </Router>

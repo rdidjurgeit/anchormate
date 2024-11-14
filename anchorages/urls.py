@@ -1,14 +1,14 @@
-from django.urls import path, include
+from django.urls import path
 from rest_framework.routers import DefaultRouter
-from . import views
-from .views import AnchorageViewSet, UserBookmarkListView
+from .views import AnchorageViewSet, BookmarkListView, BookmarkDetailView
 
 router = DefaultRouter()
 router.register(r'', AnchorageViewSet)
-router.register(r'reviews', views.ChartReviewViewSet)
+# router.register(r'bookmarks', BookmarkListView)
 
 urlpatterns = [
-    path('', include(router.urls)),
-    path('api/register/', views.RegisterView.as_view(), name='register'),
-    path('api/user/bookmarks/', UserBookmarkListView.as_view(), name='user-bookmarks'),
+    path('bookmarks/', BookmarkListView.as_view(), name='bookmark-list'),
+    path('bookmarks/<int:pk>/', BookmarkDetailView.as_view(), name='bookmark-detail'),
 ]
+
+urlpatterns += router.urls

@@ -4,12 +4,11 @@ import apiClient from '../api/apiClient';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import SearchBar from '../components/SearchBar';
 
-const AnchorageList = ({ currentUser }) => {
+const AnchorageList = ({ currentUser, bookmarkIds, onToggleBookmark }) => {
     const [anchorages, setAnchorages] = useState([]);
     const [error, setError] = useState(null);
-    const [bookmarks, setBookmarks] = useState([]);
     const [filteredAnchorages, setFilteredAnchorages] = useState([]);
-
+    console.log("bookmarkIds" , bookmarkIds)
     useEffect(() => {
         apiClient.get('/api/anchorage/')
             .then(response => {
@@ -17,12 +16,6 @@ const AnchorageList = ({ currentUser }) => {
                 setFilteredAnchorages(response.data);
             })
             .catch(error => setError(error.message));
-
-        if (currentUser) {
-            apiClient.get('/api/user/bookmarks/')
-                .then(response => setBookmarks(response.data.bookmarked_anchorages.map(anch => anch.id)))
-                .catch(error => console.error('Error fetching bookmarks:', error));
-        }
     }, [currentUser]);
 
     const handleSearch = (query) => {
@@ -32,24 +25,6 @@ const AnchorageList = ({ currentUser }) => {
                 anchorage.location.toLowerCase().includes(query.toLowerCase())
         );
         setFilteredAnchorages(filtered);
-    };
-
-    const handleBookmarkToggle = async (id) => {
-        const isBookmarked = bookmarks.includes(id);
-        
-        try {
-            if (isBookmarked) {
-                // Remove bookmark
-                await apiClient.delete(`/api/bookmarks/${id}/`);
-                setBookmarks(bookmarks.filter(bid => bid !== id));
-            } else {
-                // Add bookmark
-                await apiClient.post('/api/bookmarks/', { anchorage: id });
-                setBookmarks([...bookmarks, id]);
-            }
-        } catch (error) {
-            console.error('Error updating bookmarks:', error);
-        }
     };
 
     if (error) {
@@ -75,10 +50,10 @@ const AnchorageList = ({ currentUser }) => {
                                     {currentUser && (
                                         <i
                                             className="fas fa-anchor"
-                                            onClick={() => handleBookmarkToggle(anchorage.id)}
+                                            onClick={() => onToggleBookmark(anchorage.id)}
                                             style={{
                                                 cursor: 'pointer',
-                                                color: bookmarks.includes(anchorage.id) ? 'green' : 'gray'
+                                                color: bookmarkIds.includes(anchorage.id) ? 'green' : 'gray'
                                             }}
                                         ></i>
                                     )}
@@ -93,7 +68,7 @@ const AnchorageList = ({ currentUser }) => {
                                     <i className="fas fa-info-circle"></i> Seabed: {anchorage.seabed_type}
                                 </Card.Text>
                                 <Card.Text>
-                                    {anchorage.description.length > 100
+                                    {anchorage.description?.length > 100
                                         ? anchorage.description.substring(0, 100) + '...'
                                         : anchorage.description}
                                 </Card.Text>
