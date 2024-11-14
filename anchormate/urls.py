@@ -26,5 +26,5 @@ urlpatterns = [
     
     #Urls from Other Apps
     path('api/profiles/', include('profiles.urls')),      # Routes for profiles
-    path('api/anchorages/', include('anchorages.urls')),  # Routes for anchorages and bookmarks
+    path('api/', include('anchorages.urls')),  # Routes for anchorages and bookmarks
 ]

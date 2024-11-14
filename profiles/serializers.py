@@ -5,10 +5,10 @@ from .models import UserProfile
 
 class UserProfileSerializer(serializers.ModelSerializer):
     profile_image = serializers.ReadOnlyField(source='profile.image.url')
-    
+    username = serializers.ReadOnlyField(source='user.username')
     class Meta:
         model = UserProfile
-        fields = ['id', 'user', 'home_port', 'vessel_type', 'bio', 'image']
+        fields = ['id', 'username', 'home_port', 'vessel_type', 'bio', 'profile_image']
         read_only_fields = ['user']
 
 class UserRegistrationSerializer(serializers.ModelSerializer):

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import apiClient from '../api/apiClient'; // Ensure apiClient is configured correctly
+import apiClient from '../api/apiClient';
 import { Container, Card, Form, Button, Alert } from 'react-bootstrap';
 import '../styles/style.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -19,9 +19,9 @@ const CreateAccount = () => {
         setSuccess(null);
 
         try {
-            await apiClient.post('/api/register/', { username, password, email });
+            await apiClient.post('/api/profiles/register/', { username, password, email });
             setSuccess("Account created successfully! Redirecting to login...");
-            setTimeout(() => navigate('/login'), 2000); // Redirect after a delay
+            setTimeout(() => navigate('/login'), 2000);
         } catch (error) {
             setError("Registration failed. Please try again.");
             console.error("Registration error:", error);

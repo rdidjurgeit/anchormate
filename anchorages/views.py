@@ -11,16 +11,14 @@ class AnchorageViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(added_by=self.request.user)
 
-class BookmarkListView(generics.ListCreateAPIView):
+class BookmarkListView(viewsets.ModelViewSet):
+    queryset = Bookmark.objects.all()
     serializer_class = BookmarkSerializer
     permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
-        return Bookmark.objects.filter(user=self.request.user)
-
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
-
+        anchorage_id = self.request.data['anchorage_id']
+        serializer.save(user=self.request.user, anchorage_id=anchorage_id)
 class BookmarkDetailView(generics.RetrieveDestroyAPIView):
     serializer_class = BookmarkSerializer
     permission_classes = [IsAuthenticated]

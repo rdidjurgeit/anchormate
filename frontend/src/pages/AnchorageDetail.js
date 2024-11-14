@@ -13,7 +13,7 @@ const AnchorageDetail = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        apiClient.get(`/api/anchorage/${id}/`)
+        apiClient.get(`/api/anchorages/${id}/`)
             .then((response) => {
                 return response.data;
             })

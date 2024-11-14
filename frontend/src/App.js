@@ -11,24 +11,29 @@ import CreateAccount from './pages/CreateAccount';
 import { useAuth } from './api/useAuth';
 import AnchorageForm from './pages/AnchorageForm';
 import Bookmarks from './pages/Bookmarks';
-import apiClient from './api/apiClient'
-import { useProfile } from './api/useProfile';
+import apiClient from './api/apiClient';
+import { useBookmarks } from './api/useBookmarks';
 
 function App() {
-    const { currentUser, isLoggedIn, login, logout } = useAuth();
+    const { login, logout, currentUser, isAuthenticated } = useAuth();
+    const { bookmarks, bookmarkIds, toggleBookmark } = useBookmarks();
     const [anchorages, setAnchorages] = useState([]);
-    const { profile, bookmarkIds, toggleBookmark } = useProfile(currentUser);
 
     useEffect(() => {
         // Fetch all anchorages
-        apiClient.get('/api/anchorage/')
+        apiClient.get('/api/anchorages/')
             .then(response => setAnchorages(response.data))
             .catch(error => console.error('Error fetching anchorages:', error));
     }, [currentUser]);
 
+    // Protected Route Component
+    const ProtectedRoute = ({ children }) => {
+        return isAuthenticated ? children : <Navigate to="/login" replace />;
+    };
+
     return (
         <Router>
-            <NavigationBar loggedIn={isLoggedIn} onLogout={logout} />
+            <NavigationBar loggedIn={isAuthenticated} onLogout={logout} />
             <div className="container mt-4">
                 <Routes>
                     <Route path="/" element={<Home />} />
@@ -42,16 +47,18 @@ function App() {
                         />
                     }/>
                     <Route path="/anchorages/:id" element={<AnchorageDetail />} />
-                    <Route path="/anchorage/create" element={<AnchorageForm />} /> {/* Create anchorage */}
-                    <Route path="/anchorages/edit/:id" element={<AnchorageForm />} /> {/* Edit anchorage */}
-                    <Route path="/bookmarks"element={isLoggedIn
-                        ? (<Bookmarks 
-                            currentUser={currentUser} 
-                            bookmarkIds={bookmarkIds} 
-                            anchorages={anchorages}
-                            onToggle={toggleBookmark}
-                        />) 
-                        : (<Navigate to="/login" replace />)
+                    <Route path="/anchorages/create" element={<AnchorageForm />} />
+                    <Route path="/anchorages/edit/:id" element={<AnchorageForm />} />
+                    
+                    {/* Protected Bookmarks Route */}
+                    <Route path="/bookmarks" element={
+                        <ProtectedRoute>
+                            <Bookmarks 
+                                currentUser={currentUser} 
+                                bookmarks={bookmarks} 
+                                onToggle={toggleBookmark}
+                            />
+                        </ProtectedRoute>
                     }/>
                 </Routes>
             </div>

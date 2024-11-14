@@ -10,12 +10,12 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
     serializer_class = UserProfileSerializer
     permission_classes = [IsAuthenticated]
     
-    def get_object(self):
-        return self.request.user.profile
+    # def get_object(self):
+    #     return self.request.user.profile
 
-    # def get_queryset(self):
-    #     # Allow each user to only access their profile
-    #     return UserProfile.objects.filter(user=self.request.user)
+    def get_object(self):
+        # Allow each user to only access their profile
+        return UserProfile.objects.filter(user=self.request.user).get()
     
 
 class RegisterView(generics.CreateAPIView):

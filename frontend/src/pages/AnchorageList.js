@@ -1,21 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import apiClient from '../api/apiClient';
-import { Container, Row, Col, Card } from 'react-bootstrap';
+import { Container, Row, Col, Card, Alert, Spinner } from 'react-bootstrap';
 import SearchBar from '../components/SearchBar';
 
 const AnchorageList = ({ currentUser, bookmarkIds, onToggleBookmark }) => {
     const [anchorages, setAnchorages] = useState([]);
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
     const [filteredAnchorages, setFilteredAnchorages] = useState([]);
-    console.log("bookmarkIds" , bookmarkIds)
+
     useEffect(() => {
-        apiClient.get('/api/anchorage/')
+        apiClient.get('/api/anchorages/')
             .then(response => {
                 setAnchorages(response.data);
                 setFilteredAnchorages(response.data);
+                setLoading(false);
             })
-            .catch(error => setError(error.message));
+            .catch(error => {
+                setError(error.message);
+                setLoading(false);
+            });
     }, [currentUser]);
 
     const handleSearch = (query) => {
@@ -27,8 +32,22 @@ const AnchorageList = ({ currentUser, bookmarkIds, onToggleBookmark }) => {
         setFilteredAnchorages(filtered);
     };
 
+    if (loading) {
+        return (
+            <Container className="my-4 text-center">
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+            </Container>
+        );
+    }
+
     if (error) {
-        return <p>Error: {error}</p>;
+        return (
+            <Container className="my-4">
+                <Alert variant="danger">Error: {error}</Alert>
+            </Container>
+        );
     }
 
     return (
@@ -39,7 +58,7 @@ const AnchorageList = ({ currentUser, bookmarkIds, onToggleBookmark }) => {
                     Create New Anchorage
                 </Link>
             )}
-            <SearchBar onSearch={handleSearch} />
+            {anchorages.length > 0 && <SearchBar onSearch={handleSearch} />}
             <Row>
                 {filteredAnchorages.map(anchorage => (
                     <Col key={anchorage.id} xs={12} md={6} lg={4} className="mb-4">
@@ -55,6 +74,7 @@ const AnchorageList = ({ currentUser, bookmarkIds, onToggleBookmark }) => {
                                                 cursor: 'pointer',
                                                 color: bookmarkIds.includes(anchorage.id) ? 'green' : 'gray'
                                             }}
+                                            title={bookmarkIds.includes(anchorage.id) ? "Remove Bookmark" : "Add Bookmark"}
                                         ></i>
                                     )}
                                 </Card.Title>
@@ -69,7 +89,7 @@ const AnchorageList = ({ currentUser, bookmarkIds, onToggleBookmark }) => {
                                 </Card.Text>
                                 <Card.Text>
                                     {anchorage.description?.length > 100
-                                        ? anchorage.description.substring(0, 100) + '...'
+                                        ? `${anchorage.description.substring(0, 100)}...`
                                         : anchorage.description}
                                 </Card.Text>
                                 <Link to={`/anchorages/${anchorage.id}`} className="btn btn-primary mb-2">
