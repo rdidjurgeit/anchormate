@@ -26,7 +26,7 @@ const CreateAccount = () => {
 
         try {
             // Attempt to create a new account
-            await apiClient.post('/api/profiles/register/', { username, password, email });
+            await apiClient.post('/api/profiles/register/', { username, password, confirm_password: confirmPassword, email });
             setSuccess("Account created successfully! Redirecting to login...");
             setTimeout(() => navigate('/login'), 3000);
         } catch (error) {
