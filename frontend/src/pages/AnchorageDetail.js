@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import apiClient from '../api/apiClient';
 import { Container, Card, Button, Alert, Spinner } from 'react-bootstrap';
+import Map from '../components/Map';
 import '../styles/style.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
@@ -16,11 +16,6 @@ const AnchorageDetail = () => {
     const navigate = useNavigate();
     const [anchorage, setAnchorage] = useState(null);
     const [error, setError] = useState(null);
-
-    // Load Google Maps API
-    const { isLoaded } = useJsApiLoader({
-        googleMapsApiKey: 'YOUR_GOOGLE_MAPS_API_KEY', // Replace with your actual API key
-    });
 
     useEffect(() => {
         apiClient.get(`/api/anchorages/${id}/`)
@@ -46,31 +41,9 @@ const AnchorageDetail = () => {
     return (
         <Container className="my-4">
             {/* Map Section */}
-            {isLoaded ? (
-                <div className="mb-4">
-                    <GoogleMap
-                        mapContainerStyle={mapContainerStyle}
-                        center={{
-                            lat: parseFloat(anchorage.latitude),
-                            lng: parseFloat(anchorage.longitude),
-                        }}
-                        zoom={10}
-                    >
-                        <Marker
-                            position={{
-                                lat: parseFloat(anchorage.latitude),
-                                lng: parseFloat(anchorage.longitude),
-                            }}
-                        />
-                    </GoogleMap>
-                </div>
-            ) : (
-                <div className="text-center mb-4">
-                    <Spinner animation="border" role="status">
-                        <span className="visually-hidden">Loading map...</span>
-                    </Spinner>
-                </div>
-            )}
+            <div>
+                <Map anchorages={[anchorage]}/> 
+            </div>
 
             {/* Anchorage Details Section */}
             <Card className="p-4">

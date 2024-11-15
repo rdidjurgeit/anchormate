@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import apiClient from '../api/apiClient';
 import { Container, Card, Form, Button, Alert } from 'react-bootstrap';
 import '../styles/style.css';
@@ -23,11 +22,6 @@ const AnchorageForm = () => {
         description: '',
     });
     const [error, setError] = useState(null);
-
-    // Load Google Maps API
-    const { isLoaded } = useJsApiLoader({
-        googleMapsApiKey: 'YOUR_GOOGLE_MAPS_API_KEY', // Replace with your key
-    });
 
     useEffect(() => {
         if (id) {
@@ -151,28 +145,6 @@ const AnchorageForm = () => {
                             Cancel
                         </Button>
                     </Form>
-
-                    {/* Map Section */}
-                    {isLoaded && (
-                        <div className="mt-4">
-                            <h5>Preview Location on Map</h5>
-                            <GoogleMap
-                                mapContainerStyle={containerStyle}
-                                center={{
-                                    lat: parseFloat(anchorageData.latitude) || 0,
-                                    lng: parseFloat(anchorageData.longitude) || 0,
-                                }}
-                                zoom={4}
-                            >
-                                <Marker
-                                    position={{
-                                        lat: parseFloat(anchorageData.latitude) || 0,
-                                        lng: parseFloat(anchorageData.longitude) || 0,
-                                    }}
-                                />
-                            </GoogleMap>
-                        </div>
-                    )}
                 </Card.Body>
             </Card>
         </Container>

@@ -62,3 +62,10 @@
     color: var(--accent);
     margin-right: 5px;
 }
+
+.map-marker-icon {
+  border: none !important;
+  background: transparent !important;
+  width: 30px !important;
+  height: 70px !important;
+}

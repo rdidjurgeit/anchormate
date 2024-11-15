@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import apiClient from '../api/apiClient';
 import { Container, Row, Col, Card, Alert, Spinner } from 'react-bootstrap';
 import SearchBar from '../components/SearchBar';
+import Map from '../components/Map';
+import apiClient from '../api/apiClient';
 
 const AnchorageList = ({ currentUser, bookmarkIds, onToggleBookmark }) => {
     const [anchorages, setAnchorages] = useState([]);
@@ -55,10 +56,15 @@ const AnchorageList = ({ currentUser, bookmarkIds, onToggleBookmark }) => {
             <h1>Anchorages</h1>
             {currentUser && (
                 <Link to="/anchorages/create" className="btn btn-primary mb-4">
-                Create New Anchorage
-            </Link>
+                    Create New Anchorage
+                </Link>
             )}
             {anchorages.length > 0 && <SearchBar onSearch={handleSearch} />}
+            <div style={{marginBottom: "20px"}}>
+                <Map anchorages={anchorages}/> 
+            </div>
+
+            {/* Anchorage List Section */}
             <Row>
                 {filteredAnchorages.map(anchorage => (
                     <Col key={anchorage.id} xs={12} md={6} lg={4} className="mb-4">
