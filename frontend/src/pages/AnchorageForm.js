@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import apiClient from '../api/apiClient';
 import { Container, Card, Form, Button, Alert } from 'react-bootstrap';
 import '../styles/style.css';
+
+const containerStyle = {
+  width: '100%',
+  height: '400px',
+};
 
 const AnchorageForm = () => {
     const { id } = useParams();
@@ -10,13 +16,18 @@ const AnchorageForm = () => {
     const [anchorageData, setAnchorageData] = useState({
         name: '',
         location: '',
-        latitude: '',
-        longitude: '',
+        latitude: 0,
+        longitude: 0,
         depth: '',
         seabed_type: '',
         description: '',
     });
     const [error, setError] = useState(null);
+
+    // Load Google Maps API
+    const { isLoaded } = useJsApiLoader({
+        googleMapsApiKey: 'YOUR_GOOGLE_MAPS_API_KEY', // Replace with your key
+    });
 
     useEffect(() => {
         if (id) {
@@ -35,23 +46,13 @@ const AnchorageForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // Validate latitude and longitude fields
-        if (!isValidCoordinate(anchorageData.latitude)) {
-            setError("Latitude must be a valid decimal number.");
-            return;
-        }
-        if (!isValidCoordinate(anchorageData.longitude)) {
-            setError("Longitude must be a valid decimal number.");
-            return;
-        }
-
         const request = id
-            ? apiClient.put(`/api/anchorages/${id}/`, anchorageData)  // Update if editing
-            : apiClient.post('/api/anchorages/', anchorageData);       // Create if new
+            ? apiClient.put(`/api/anchorages/${id}/`, anchorageData) // Update if editing
+            : apiClient.post('/api/anchorages/', anchorageData);    // Create if new
 
         request
             .then(() => navigate('/anchorages'))
-            .catch(error => {
+            .catch((error) => {
                 const errorMsg = error.response?.data
                     ? JSON.stringify(error.response.data)
                     : "Failed to save anchorage.";
@@ -59,108 +60,122 @@ const AnchorageForm = () => {
             });
     };
 
-    // Helper function to validate decimal coordinates
-    const isValidCoordinate = (value) => {
-        const decimalRegex = /^-?\d+(\.\d+)?$/;
-        return decimalRegex.test(value);
-    };
-
     return (
-        <div>
-            <Container className="my-4">
-                <Card className="p-4">
-                    <Card.Body>
-                        <Card.Title>{id ? 'Edit' : 'Create'} Anchorage</Card.Title>
-                        {error && <Alert variant="danger">{error}</Alert>}
-                        <Form onSubmit={handleSubmit}>
-                            <Form.Group className="mb-3">
-                                <Form.Label>Name</Form.Label>
-                                <Form.Control
-                                    name="name"
-                                    placeholder="Name"
-                                    value={anchorageData.name}
-                                    onChange={handleChange}
-                                    required
+        <Container className="my-4">
+            <Card className="p-4">
+                <Card.Body>
+                    <Card.Title>{id ? 'Edit' : 'Create'} Anchorage</Card.Title>
+                    {error && <Alert variant="danger">{error}</Alert>}
+                    <Form onSubmit={handleSubmit}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Name</Form.Label>
+                            <Form.Control
+                                name="name"
+                                placeholder="Name"
+                                value={anchorageData.name}
+                                onChange={handleChange}
+                                required
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Location</Form.Label>
+                            <Form.Control
+                                name="location"
+                                placeholder="Location"
+                                value={anchorageData.location}
+                                onChange={handleChange}
+                                required
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Latitude</Form.Label>
+                            <Form.Control
+                                type="number"
+                                step="any"
+                                name="latitude"
+                                placeholder="Latitude"
+                                value={anchorageData.latitude}
+                                onChange={handleChange}
+                                required
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Longitude</Form.Label>
+                            <Form.Control
+                                type="number"
+                                step="any"
+                                name="longitude"
+                                placeholder="Longitude"
+                                value={anchorageData.longitude}
+                                onChange={handleChange}
+                                required
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Depth</Form.Label>
+                            <Form.Control
+                                type="number"
+                                step="any"
+                                name="depth"
+                                placeholder="Depth"
+                                value={anchorageData.depth}
+                                onChange={handleChange}
+                                required
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Seabed Type</Form.Label>
+                            <Form.Control
+                                name="seabed_type"
+                                placeholder="Seabed Type"
+                                value={anchorageData.seabed_type}
+                                onChange={handleChange}
+                                required
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Description</Form.Label>
+                            <Form.Control
+                                as="textarea"
+                                name="description"
+                                placeholder="Description"
+                                value={anchorageData.description}
+                                onChange={handleChange}
+                                required
+                            />
+                        </Form.Group>
+                        <Button variant="primary" type="submit" className="me-2">
+                            {id ? 'Update' : 'Create'}
+                        </Button>
+                        <Button variant="secondary" onClick={() => navigate('/anchorages')}>
+                            Cancel
+                        </Button>
+                    </Form>
+
+                    {/* Map Section */}
+                    {isLoaded && (
+                        <div className="mt-4">
+                            <h5>Preview Location on Map</h5>
+                            <GoogleMap
+                                mapContainerStyle={containerStyle}
+                                center={{
+                                    lat: parseFloat(anchorageData.latitude) || 0,
+                                    lng: parseFloat(anchorageData.longitude) || 0,
+                                }}
+                                zoom={4}
+                            >
+                                <Marker
+                                    position={{
+                                        lat: parseFloat(anchorageData.latitude) || 0,
+                                        lng: parseFloat(anchorageData.longitude) || 0,
+                                    }}
                                 />
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                                <Form.Label>Location</Form.Label>
-                                <Form.Control
-                                    name="location"
-                                    placeholder="Location"
-                                    value={anchorageData.location}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                                <Form.Label>Latitude</Form.Label>
-                                <Form.Control
-                                    type="number"
-                                    step="any"
-                                    name="latitude"
-                                    placeholder="Latitude"
-                                    value={anchorageData.latitude}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                                <Form.Label>Longitude</Form.Label>
-                                <Form.Control
-                                    type="number"
-                                    step="any"
-                                    name="longitude"
-                                    placeholder="Longitude"
-                                    value={anchorageData.longitude}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                                <Form.Label>Depth</Form.Label>
-                                <Form.Control
-                                    type="number"
-                                    step="any"
-                                    name="depth"
-                                    placeholder="Depth"
-                                    value={anchorageData.depth}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                                <Form.Label>Seabed Type</Form.Label>
-                                <Form.Control
-                                    name="seabed_type"
-                                    placeholder="Seabed Type"
-                                    value={anchorageData.seabed_type}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                                <Form.Label>Description</Form.Label>
-                                <Form.Control
-                                    as="textarea"
-                                    name="description"
-                                    placeholder="Description"
-                                    value={anchorageData.description}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </Form.Group>
-                            <Button variant="primary" type="submit" className="me-2">
-                                {id ? 'Update' : 'Create'}
-                            </Button>
-                            <Button variant="secondary" onClick={() => navigate('/anchorages')}>
-                                Cancel
-                            </Button>
-                        </Form>
-                    </Card.Body>
-                </Card>
-            </Container>
-        </div>
+                            </GoogleMap>
+                        </div>
+                    )}
+                </Card.Body>
+            </Card>
+        </Container>
     );
 };
 

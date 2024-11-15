@@ -51,8 +51,16 @@ function App() {
                         />
                     }/>
                     <Route path="/anchorages/:id" element={<AnchorageDetail />} />
-                    <Route path="/anchorages/create" element={<AnchorageForm />} />
-                    <Route path="/anchorages/edit/:id" element={<AnchorageForm />} />
+                    <Route path="/anchorages/create" element={
+                        <ProtectedRoute>
+                            <AnchorageForm currentUser={currentUser} />
+                        </ProtectedRoute>
+                    }/>
+                    <Route path="/anchorages/edit/:id" element={
+                        <ProtectedRoute>
+                            <AnchorageForm currentUser={currentUser} />
+                        </ProtectedRoute>
+                    }/>
                     
                     {/* Protected Bookmarks Route */}
                     <Route path="/bookmarks" element={
