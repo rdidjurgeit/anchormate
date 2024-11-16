@@ -11,6 +11,8 @@ db.sqlite3
 venv
 django.po
 .env
+django-staticfiles/
+staticfiles/
 
 # Django REST framework JWT tokens (if any token files are generated)
 .jwt_cache

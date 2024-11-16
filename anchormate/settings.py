@@ -9,14 +9,11 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 from datetime import timedelta
 import os
-try:
-    from .env import *
-except ImportError:
-    pass
+import dj_database_url
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -38,11 +35,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-7=mes&zvoat4@c$z*b6+%vjz0k!-i@coz!2j$mai$xml3n4o1@'
+if 'SECRET_KEY' in os.environ:
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "anchoragemate-783dbb8d670b.herokuapp.com"]
 
 
 # Application definition
@@ -60,7 +60,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken', 
-   
+
     #Project App
     'anchorages',
     'profiles'
@@ -81,6 +81,7 @@ PASSWORD_RESET_TIMEOUT_DAYS = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -95,7 +96,7 @@ ROOT_URLCONF = 'anchormate.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'staticfiles', 'build')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -112,6 +113,7 @@ WSGI_APPLICATION = 'anchormate.wsgi.application'
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
+    'https://anchoragemate-783dbb8d670b.herokuapp.com',
 ]
 CORS_ALLOW_CREDENTIALS = True
 
@@ -119,20 +121,16 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    },
+}
 
-# Use SQLite for local development and the environment variable DATABASE_URL for production
-if 'DEV' in os.environ:  # Set 'DEV' in your environment variables for local development
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
-else:  # Default to production database
-    DATABASES = {
-        'default': dj_database_url.parse(os.environ.get("DATABASE_URL", ""))
-    }
-
+if 'DATABASE_URL' in os.environ:
+    DATABASES['default'] = dj_database_url.parse(os.environ.get("DATABASE_URL"))
+    DEBUG = False
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -169,6 +167,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'django-staticfiles')
+
+WHITENOISE_ROOT = os.path.join(BASE_DIR,  'staticfiles', 'build')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

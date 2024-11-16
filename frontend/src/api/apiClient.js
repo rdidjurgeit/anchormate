@@ -3,7 +3,9 @@ import axios from "axios";
 const TOKEN_LOCAL_STORAGE_KEY = "accessToken";
 
 export const apiClient = axios.create({
-    baseURL: "http://localhost:8000/",
+    baseURL: process.env.API_BASE_URL 
+        ? process.env.API_BASE_URL
+        :  "http://localhost:8000/",
     headers: {
         "Content-Type": "application/json",
     },

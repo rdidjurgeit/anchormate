@@ -18,9 +18,14 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from django.contrib.auth import views as auth_views
+from django.views.generic import TemplateView
 from django.urls import path
 
 urlpatterns = [
+    # Serve react frontend
+    path('', TemplateView.as_view(template_name='index.html')),
+
+    # API 
     path('admin/', admin.site.urls),
     path('api/auth/', include('rest_framework.urls')),
 
@@ -39,3 +44,5 @@ urlpatterns = [
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     
 ]
+
+handler404 = TemplateView.as_view(template_name='index.html')
