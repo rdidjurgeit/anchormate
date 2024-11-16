@@ -1,7 +1,13 @@
 #!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
-import os
 import sys
+import os
+
+    #os.environ['CLOUDINARY_URL'] = "cloudinary://..."
+    #os.environ['SECRET_KEY'] = "zxmdehCfwXv5"
+    # os.environ['DEV'] = '1'
+    #os.environ['DATABASE_URL'] = "postgres://ue9xpvbfzos:zxmdehCfwXv5@ep-gentle-mountain-a23bxz6h-pooler.eu-central-1.aws.neon.tech/shush_hug_fled_885808"
+
 
 
 def main():

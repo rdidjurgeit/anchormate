@@ -1,4 +1,4 @@
-# README
+# README AnchorMate
 
 ## Getting started
 

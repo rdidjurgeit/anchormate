@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import os
+try:
+    from .env import *
+except ImportError:
+    pass
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -49,10 +54,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
-    'rest_framework.authtoken', 
+    'dj_rest_auth.registration',
     'dj_rest_auth',
     'django_extensions',
+    'corsheaders',
+    'rest_framework',
+    'rest_framework.authtoken', 
+   
     #Project App
     'anchorages',
     'profiles'
@@ -112,12 +120,18 @@ CORS_ALLOW_ALL_ORIGINS = True
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Use SQLite for local development and the environment variable DATABASE_URL for production
+if 'DEV' in os.environ:  # Set 'DEV' in your environment variables for local development
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:  # Default to production database
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ.get("DATABASE_URL", ""))
+    }
 
 
 # Password validation
