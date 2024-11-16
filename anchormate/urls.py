@@ -22,8 +22,7 @@ from django.views.generic import TemplateView
 from django.urls import path
 
 urlpatterns = [
-    # Serve react frontend
-    path('', TemplateView.as_view(template_name='index.html')),
+  
 
     # API 
     path('admin/', admin.site.urls),
@@ -42,6 +41,8 @@ urlpatterns = [
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+      # Serve react frontend
+    path('', TemplateView.as_view(template_name='index.html')),
     
 ]
 
