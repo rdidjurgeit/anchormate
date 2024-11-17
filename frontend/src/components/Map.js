@@ -62,9 +62,6 @@ const Map = ({ anchorages }) => {
                         </Popup>
                     </Marker>
                 ))}
-            
-            <Marker position={[51.505, -0.09]} icon={markerIcon}>
-            </Marker>
         </MapContainer>
     );
 };
