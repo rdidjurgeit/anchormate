@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 class AnchorageSerializer(serializers.ModelSerializer):
     added_by = serializers.ReadOnlyField(source='added_by.username')
+    seabed_type = serializers.CharField(default="Unknown")
 
     class Meta:
         model = Anchorage

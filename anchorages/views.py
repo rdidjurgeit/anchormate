@@ -9,7 +9,10 @@ class AnchorageViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
-        serializer.save(added_by=self.request.user)
+        serializer.save(
+            added_by=self.request.user,
+            seabed_type=self.request.data.get("seabed_type", "Unknown")
+        )
 
 class BookmarkListView(viewsets.ModelViewSet):
     queryset = Bookmark.objects.all()
