@@ -3,7 +3,7 @@ import axios from "axios";
 const TOKEN_LOCAL_STORAGE_KEY = "accessToken";
 
 export const apiClient = axios.create({
-    baseURL: process.env.AREACT_APP_API_BASE_URL 
+    baseURL: process.env.REACT_APP_API_BASE_URL 
         ? process.env.REACT_APP_API_BASE_URL
         :  "http://localhost:8000/",
     headers: {

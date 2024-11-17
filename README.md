@@ -1,9 +1,7 @@
 # README AnchorMate
-# Pomodoro Timer
 
-![Device Showcase](https://github.com/reidycolm/MS2-Project/blob/master/assets/img/projectdisplay.png "AnchoraMate")
 
-### View the live project [here.](https://reidycolm.github.io/MS2-Project/)
+### View the live project [here.](https://anchoragemate-783dbb8d670b.herokuapp.com/)
 
 This platform is is a community-driven platform designed to be the ultimate resource for sailors seeking the best anchorages worldwide. Whether you're navigating familiar waters or exploring new territories, Anchormate provides detailed insights on anchorages shared by sailors themselves. Users can browse and contribute essential information, including location details, depth, seabed type, and personal experiences, creating a rich database of trusted, real-world knowledge. Anchormate is not just a guide but a collaborative tool where the global sailing community connects to make every voyage safer and more enjoyable,no matter where the journey takes you 
 
@@ -69,7 +67,7 @@ The project was deployed to GitHub Pages using the following steps...
 
 ### Making a Local Clone
 
-1. Log in to GitHub and locate the [GitHub Repository](https://reidycolm.github.io/MS2-Project/)
+1. Log in to GitHub and locate the [GitHub Repository](https://github.com/rdidjurgeit/anchormate)
 2. Under the repository name, click the "Code" button and a dropdown menu will appear.
 3. To clone the repository using HTTPS, under "Clone with HTTPS", copy the link.
 4. Open Git Bash
@@ -167,7 +165,7 @@ $ python manage.py createsuperuser
 
 ### Code
 
--   Most off the Code where made using some variation off standar practices and common patterns from Django REST Framework, React, and JavScrips.
+-  Most off the Code where made using some variation off standar practices and common patterns from Django REST Framework, React, and JavScrips.
 
 - Some of the ideas where take from the walkthrough from DjangoFrameWork and project moments examples from Code Institute
 
@@ -210,3 +208,7 @@ $ python manage.py createsuperuser
 ### Media
 
 -  All Icons used were taken from Font Awesome.
+
+### README
+
+- The README was take from exemplo from user reidycolm student from Code Institute
