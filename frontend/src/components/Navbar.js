@@ -20,7 +20,8 @@ const NavigationBar = ({ loggedIn, onLogout }) => {
                         {loggedIn ? (
                             <>
                                 <Nav.Link as={Link} to="/profile">User Profile</Nav.Link>
-                                <Nav.Link as={Link} to="/bookmarks">Bookmarks</Nav.Link>
+                                <Nav.Link as={Link} to="/bookmarks">Bookmarks
+                                <i className="fas fa-anchor" style={{ marginRight: '5px' }}></i></Nav.Link>
                                 <Nav.Link onClick={onLogout}>Logout</Nav.Link>
                             </>
                         ) : (
